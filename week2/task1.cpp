@@ -134,6 +134,8 @@ public:
         return current->data;
     }
 
+
+    //task 2
     void partition(int x)
     {
 
