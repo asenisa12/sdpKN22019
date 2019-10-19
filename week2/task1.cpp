@@ -33,10 +33,9 @@ public:
     Iterator(const Node* pNode) : 
         currentNode (pNode) { } 
   
-        Iterator& operator=(Node* pNode) 
+        Iterator(const Iterator &other) 
         { 
-            this->currentNode = pNode; 
-            return *this; 
+            this->currentNode = other.currentNode; 
         } 
   
         // Prefix ++ overload 
@@ -103,20 +102,11 @@ public:
     {
         return size;
     }
-  
+
     void push_back(T value)
     {
         Node *new_node = new Node(value);
-        if(topNode != nullptr)
-        {
-            new_node->prev = topNode;
-            topNode->next = new_node;
-            topNode = new_node;
-        }else
-        {
-            rootNode = new_node;
-            topNode = rootNode;
-        }
+        push_back_node(new_node);
         size++;
     }
 
@@ -146,53 +136,63 @@ public:
 
     void partition(int x)
     {
-        Node *lowerTop = nullptr, *lowerRoot = nullptr;
-        Node *higherTop = nullptr, *higherRoot = nullptr;
 
         Node *current = rootNode;
-        while(current != nullptr)
+        Node *end = topNode;
+        for(int i=0; i<size; i++)
         {
-            if(current->data < x)
+            if(current->data >= x)
             {
-                if(lowerTop == nullptr)
-                {
-                    lowerRoot = current;
-                    lowerRoot->prev = nullptr;
-                    lowerTop = lowerRoot;
-                }
-                else
-                {
-                    lowerTop->next = current;
-                    current->prev = lowerTop;
-                    lowerTop = lowerTop->next;
-                }           
+                Node *higher = current;
+                current = current->next;
+                
+                remove_node(higher);
+                push_back_node(higher);
+
+                higher->next = nullptr;
             }
             else
             {
-                if(higherTop == nullptr)
-                {
-                    higherRoot = current;
-                    higherTop = higherRoot;
-                }
-                else
-                {
-                    higherTop->next = current;
-                    current->prev = higherTop;
-                    higherTop = higherTop->next;
-                }
+               current = current->next;
             }
-            current = current->next;
+            
+            
         }
+
+    }
+
+private: 
+    void remove_node(Node *node)
+    {
+        if(node->prev != nullptr)
+        {
+            node->prev->next = node->next;
+        }else
+        {
+            rootNode = node->next;
+        }
+        
+        node->next->prev = node->prev;
+    }
     
-        higherTop->next = nullptr;
-        rootNode = lowerRoot;
-        lowerTop->next = higherRoot;
-        topNode = higherTop;
+    void push_back_node(Node *new_node)
+    {
+        if(topNode != nullptr)
+        {
+            new_node->prev = topNode;
+            topNode->next = new_node;
+            topNode = new_node;
+        }else
+        {
+            rootNode = new_node;
+            topNode = rootNode;
+        }
     }
 
 }; 
   
 int main()
+   
 {
 
     LList<int> l;
@@ -202,7 +202,6 @@ int main()
     l.push_back(4);
     l.push_back(5);
     l.push_back(8);
-    l.partition(5);
 
     for (LList<int>::Iterator it = l.begin(); it != l.end();it++)
     {
@@ -210,6 +209,7 @@ int main()
     }
     cout<<endl;
 
+    l.partition(5);
     for(size_t i = 0; i < l.get_size(); i++)
     {
         cout<< "l["<<i<<"]: "<< l[i] <<endl;
