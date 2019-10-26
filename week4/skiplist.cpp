@@ -99,6 +99,7 @@ public:
             deleteall();
             copy(other);
         }
+        return *this;
     }
 
     SkipList(const SkipList &other)

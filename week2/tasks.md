@@ -1,20 +1,22 @@
+# **Stack**
+
 ### **Task 1:**
-    Implement operator[] and Iterator object to a given linked list implementation
+    Implement two stacks in an array
+    Create a data structure twoStacks that represents two stacks. Implementation of twoStacks should use only one array, i.e., both stacks should use the same array for storing elements. Following functions must be supported by twoStacks.
+    push1(int x) –> pushes x to first stack
+    push2(int x) –> pushes x to second stack
+
+    pop1() –> pops an element from first stack and return the popped element
+    pop2() –> pops an element from second stack and return the popped element
+
+
 
 ### **Task 2:**
-    Write code to partition a linked list around a value x,
-    such that all nodes less than x come before all nodes greater than or equal to x.
+    Design a stack which, in addition to push and pop, has a function min which returns the minimum element. Push, pop and min should all operate in 0(1) time.
 
-    Example
-    Input:
-        x=5
-        list = {4,6,7,3,6,4,7}
-    Output:
-        list ={4,3,4,6,7,6,7}
 
 ### **Task 3:**
-    You have two numbers represented by a std::list, where each node contains a single digit. The digits are stored in reverse order, such that the 1 's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list. 
-    Example 
-    Input: (7-> 1 -> 6) + (5 -> 9 -> 2).Thatis,617 + 295. 
-    Output: 2 - > 1 - > 9. That is, 912.
-
+    Design a stack with the following operations: 
+        1) push() which adds an element to the top of stack.
+        2) pop() which removes an element from top of stack.
+        3) findMiddle() which will return middle element of the stack.

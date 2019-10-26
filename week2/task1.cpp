@@ -1,221 +1,113 @@
-#include <iostream> 
-using namespace std; 
+#include <iostream>
+#include <vector>
+using namespace std;
 
-template <typename T> 
-class LList 
-{ 
-    int size;
-    class Node 
-    { 
-        friend class LList;
-        T data; 
-        Node* next;
-        Node* prev;
-
-    public:
-        Node(T value)
-            :data(value), next(nullptr), prev(nullptr)
-        {
-        }
-    };
-
-    Node *rootNode, *topNode; 
-
-  
-public:
-
-    class Iterator 
-    { 
-    public: 
-    Iterator()  : 
-        currentNode (rootNode) { } 
-  
-    Iterator(const Node* pNode) : 
-        currentNode (pNode) { } 
-  
-        Iterator(const Iterator &other) 
-        { 
-            this->currentNode = other.currentNode; 
-        } 
-  
-        // Prefix ++ overload 
-        Iterator& operator++() 
-        { 
-            if (currentNode) 
-                currentNode = currentNode->next; 
-            return *this; 
-        } 
-  
-        // Postfix ++ overload 
-        Iterator operator++(int) 
-        { 
-            Iterator iterator = *this; 
-            ++*this; 
-            return iterator; 
-        } 
-  
-        bool operator!=(const Iterator& iterator) 
-        { 
-            return currentNode != iterator.currentNode; 
-        } 
-  
-        const T& operator*() 
-        { 
-
-            return currentNode->data; 
-        } 
-  
-    private: 
-        const Node* currentNode; 
-    };
-
-    LList<T>() :rootNode(nullptr), topNode(nullptr), size(0)
-    { 
-    }
-
-    ~LList<T>()
-    {
-        if(topNode != nullptr)
-        {
-            do{
-                Node *curTop = topNode;
-                topNode = topNode->prev;
-
-                delete curTop;
-
-            }while(topNode->prev != nullptr);
-        }
-    }
-  
-    Iterator begin() 
-    { 
-        return Iterator(rootNode); 
-    } 
-  
-
-    Iterator end() 
-    { 
-        return Iterator(nullptr); 
-    } 
-  
-    int get_size()
-    {
-        return size;
-    }
-
-    void push_back(T value)
-    {
-        Node *new_node = new Node(value);
-        push_back_node(new_node);
-        size++;
-    }
-
-    T& operator[](int id){
-        Node *current;
-        if(id < size / 2)
-        {
-            current = rootNode;
-            for(int i = 0; i<id; i++)
-            {
-                current = current->next;
-            }
-            return current->data;
-        }
-        else
-        {
-            current = topNode;
-            for(int i = size - (id+1); i>0; i--)
-            {
-                current = current->prev;
-            }
-
-        }
-        
-        return current->data;
-    }
-
-
-    //task 2
-    void partition(int x)
-    {
-
-        Node *current = rootNode;
-        Node *end = topNode;
-        for(int i=0; i<size; i++)
-        {
-            if(current->data >= x)
-            {
-                Node *higher = current;
-                current = current->next;
-                
-                remove_node(higher);
-                push_back_node(higher);
-
-                higher->next = nullptr;
-            }
-            else
-            {
-               current = current->next;
-            }
-            
-            
-        }
-
-    }
-
-private: 
-    void remove_node(Node *node)
-    {
-        if(node->prev != nullptr)
-        {
-            node->prev->next = node->next;
-        }else
-        {
-            rootNode = node->next;
-        }
-        
-        node->next->prev = node->prev;
-    }
-    
-    void push_back_node(Node *new_node)
-    {
-        if(topNode != nullptr)
-        {
-            new_node->prev = topNode;
-            topNode->next = new_node;
-            topNode = new_node;
-        }else
-        {
-            rootNode = new_node;
-            topNode = rootNode;
-        }
-    }
-
-}; 
-  
-int main()
-   
+class DoubleStack
 {
+    vector<int> _data;//stores the stacks
+    int _top1, _top2;
 
-    LList<int> l;
-    l.push_back(6);
-    l.push_back(7);
-    l.push_back(3);
-    l.push_back(4);
-    l.push_back(5);
-    l.push_back(8);
-
-    for (LList<int>::Iterator it = l.begin(); it != l.end();it++)
+    void shift(int start)
     {
-        cout<<(*it)<<" ";
+        _data.resize(_data.size() + 1);
+        for(int i = _data.size() - 2; i >= start; i--)
+        {
+            _data[i + 1] = _data[i];
+        }
+        _top2++;
     }
-    cout<<endl;
 
-    l.partition(5);
-    for(size_t i = 0; i < l.get_size(); i++)
+public:
+    DoubleStack(int default_size)
+        :_data(default_size),
+         _top1(-1), _top2(default_size)
+        {}
+
+    void push1(int value)
     {
-        cout<< "l["<<i<<"]: "<< l[i] <<endl;
+        if(_top1 + 1 == _top2)
+        {
+            shift(_top1 + 1);
+        }
+        ++_top1;
+        _data[_top1] = value;
     }
+
+    void push2(int value)
+    {
+        if(_top2 - 1 == _top1)
+        {
+            shift(_top2);
+        }
+        _top2--;
+        _data[_top2] = value;
+    }
+
+    int top1()
+    {
+        if(_top1 > -1)
+            return _data[_top1];
+        else return -1;
+    }
+
+    int top2()
+    {
+        if(_top2 > -1)
+            return _data[_top2];
+        else return -1;
+    }
+
+    int pop1()
+    {
+        if(_top1 >= 0)
+        {
+            int val = _data[_top1];
+            _top1--;
+            return val;
+        }
+        return -1;
+    }
+
+    int pop2()
+    {
+        if(_top2 <= _data.size() - 1)
+        {
+            int val = _data[_top2];
+            _top2++;
+            return val;
+
+        }
+        return -1;
+    }
+
+};
+
+
+int main()
+{
+    DoubleStack ds(4);
+
+    for(int i = 0; i<5; i++)
+    {
+        ds.push1(i);
+    }
+    for(int i = 1; i<5; i++)
+    {
+        ds.push2(i*10);
+    }
+
+    for(int i = 0; i<6; i++)
+    {
+        cout<<ds.pop1()<<endl;
+    }
+
+    cout<<"\n";
+    for(int i = 0; i<6; i++)
+    {
+        cout<<ds.pop2()<<endl;
+    }
+
+
 
 
     return 0;
