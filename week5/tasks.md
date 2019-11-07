@@ -22,7 +22,8 @@
                 * constructor List(int N), which during initialization fills the list with the numbers from 0 to N
                 * push() and pop() functions
                 * function that prints its elements
-                * function reverse() that reverses the list using std::stack
+                * function reverse() that reverses the list using std::stack (https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/)
+                * function removebigger(int N) that removes every element bigger than N
 
         For questions: asen0stoilov@gmail.com
         
