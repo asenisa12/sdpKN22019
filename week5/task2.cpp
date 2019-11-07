@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <stack>
 using namespace std;
 
 
@@ -15,8 +16,54 @@ struct Node
     {}
 };
 
+void reverseList(Node *&first)
+{
+    Node *current = first;
+    Node *last = first;
 
-void erase(Node *&elem )
+    while(current != nullptr)
+    {
+        Node *next = current->next;
+        first->prev = current;
+        current->next = first;
+
+        first = current;
+        current = next;
+    }
+    last->next = nullptr;
+    first->prev = nullptr;
+}
+
+void reverseListWithStack(Node *&first)
+{
+    stack<Node*> s;
+    Node *current = first;
+    while(current != nullptr)
+    {
+        s.push(current);
+        current = current->next;
+    }
+
+    Node *last = s.top();
+    s.pop();
+    last->next = nullptr;
+    first = last;
+    while(!s.empty())
+    {
+        Node *prev_first = first;
+        first = s.top();
+        first->next = prev_first;
+        prev_first->prev = first;
+
+        s.pop();
+    }
+
+    first->prev = nullptr;
+}
+
+
+
+Node* erase(Node *elem)
 {
     Node *tmp = elem;
     elem = elem->next;
@@ -25,12 +72,14 @@ void erase(Node *&elem )
         elem->prev = tmp->prev;
 
     if(tmp->prev != nullptr)
-    {
         tmp->prev->next = elem;
-    }
 
     delete tmp; 
+
+    return elem;
 }
+
+
 void remove_Nth_recursion(Node *elem, int N, int cnt)
 {
     if(elem == nullptr)
@@ -38,7 +87,7 @@ void remove_Nth_recursion(Node *elem, int N, int cnt)
 
     if(cnt == 0)
     {
-        erase(elem);
+        elem = erase(elem);
         cnt = N;
     }
     else
@@ -81,13 +130,15 @@ public:
     {
         return current->data; 
     }
-    friend void erase(Iterator &it);
+    friend Iterator erase(const Iterator &it);
 
 };
 
-void erase(Iterator &it)
+Iterator erase(const Iterator &it)
 {
-    erase(it.current);
+    Node *new_ptr = erase(it.current);
+    
+    return Iterator(new_ptr);
 }
 
 Iterator end()
@@ -99,13 +150,13 @@ void remove_Nth_iterator(Node *first, int N)
 {
     Iterator it(first);
     
-    int cnt = N-1;
-    while(it!=end())
+    int cnt = N;
+    while(it != end())
     {
-        if(cnt-- == 0)
+        if(cnt-- == 1)
         {
-            erase(it);
-            cnt = N-1;
+            it = erase(it);
+            cnt = N;
         }
         else
         {
@@ -117,14 +168,13 @@ void remove_Nth_iterator(Node *first, int N)
 void remove_Nth_std_list(list<int> &l, int N)
 {
     std::list<int>::iterator it = l.begin();
-    int cnt = N-1;
+    int cnt = N;
     while (it != l.end())
     {
-        if(cnt-- == 0)
+        if(cnt-- == 1)
         {
-            std::list<int>::iterator prev = it++; 
-            l.erase(prev);
-            cnt = N-1;
+            it = l.erase(it);
+            cnt = N;
         }
         else it++;
     }
@@ -155,10 +205,6 @@ void deleteList(Node *first)
 
 
 
-
-
-
-
 int main()
 {
 
@@ -173,17 +219,16 @@ int main()
     }
     // remove_Nth_recursion(first, 5, 4);
     // remove_Nth_iterator(first, 5);
-    // printList(first);
+
+    reverseListWithStack(first);
+    printList(first);
     
-    
-    
-    
-    
-    list<int> l;
-    for(int i = 1; i <= 25; i++)
-    {
-        l.push_back(i);
-    }
+
+    // list<int> l;
+    // for(int i = 1; i <= 25; i++)
+    // {
+    //     l.push_back(i);
+    // }
     // remove_Nth_std_list(l,5);
     // for(auto elem : l)
     // {
