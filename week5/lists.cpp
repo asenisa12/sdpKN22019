@@ -191,7 +191,7 @@ void printList(Node *first)
     cout << " ]" << endl;
 }
 
-// deletes all elemnts from list
+// deletes all elements from list
 void deleteList(Node *first)
 {
     Node *current = first;

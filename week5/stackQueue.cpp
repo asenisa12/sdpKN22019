@@ -9,7 +9,7 @@ class Queue
     stack<int> s1, s2;
 public:
 
-    //ads element at the end
+    //adds element at the end
     void enQueue(int x)
     {
         while(!s1.empty())
