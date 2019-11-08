@@ -217,9 +217,10 @@ int main()
         current = current->next;
     }
     // remove_Nth_recursion(first, 5, 4);
-    remove_Nth_iterator(first, 5);
+    // remove_Nth_iterator(first, 5);
 
-    reverseListWithStack(first);
+    // reverseList(first);
+    // reverseListWithStack(first);
     printList(first);
     
 
