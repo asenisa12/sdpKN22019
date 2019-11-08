@@ -2,10 +2,14 @@
 #include <iostream>
 using namespace std;
 
+
+// Task1
 class Queue
 {
     stack<int> s1, s2;
 public:
+
+    //ads element at the end
     void enQueue(int x)
     {
         while(!s1.empty())
@@ -23,6 +27,7 @@ public:
         }
     }
 
+    //gets element from the front
     int deQueue()
     {
         if(s1.empty())

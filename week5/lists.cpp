@@ -4,7 +4,6 @@
 using namespace std;
 
 
-
 struct Node
 {
     Node *next;
@@ -16,6 +15,7 @@ struct Node
     {}
 };
 
+// Task 2 a)
 void reverseList(Node *&first)
 {
     Node *current = first;
@@ -34,6 +34,8 @@ void reverseList(Node *&first)
     first->prev = nullptr;
 }
 
+// Task 2 b)
+// this method is more usefull for singly linked list
 void reverseListWithStack(Node *&first)
 {
     stack<Node*> s;
@@ -44,25 +46,22 @@ void reverseListWithStack(Node *&first)
         current = current->next;
     }
 
-    Node *last = s.top();
+    first = s.top();
     s.pop();
-    last->next = nullptr;
-    first = last;
+    first->prev = nullptr;
+    current = first;
+
     while(!s.empty())
     {
-        Node *prev_first = first;
-        first = s.top();
-        first->next = prev_first;
-        prev_first->prev = first;
-
+        current->next = s.top();
+        current->next->prev = current;
+        current = current->next;
         s.pop();
     }
-
-    first->prev = nullptr;
+    current->next = nullptr;
 }
 
-
-
+// erases element from list and returns the next one
 Node* erase(Node *elem)
 {
     Node *tmp = elem;
@@ -79,7 +78,7 @@ Node* erase(Node *elem)
     return elem;
 }
 
-
+// Task3 a) *1
 void remove_Nth_recursion(Node *elem, int N, int cnt)
 {
     if(elem == nullptr)
@@ -113,14 +112,6 @@ public:
         return *this; 
     } 
 
-    //postfix
-    Iterator operator++(int)
-    {
-        Iterator it = *this;
-        ++*this;
-        return it;
-    }
-
     bool operator!=(const Iterator& other)
     {
         return current != other.current;
@@ -134,6 +125,9 @@ public:
 
 };
 
+// erase() method for Iterator
+// it removes the element at the current position 
+// and returns iterator to the next one
 Iterator erase(const Iterator &it)
 {
     Node *new_ptr = erase(it.current);
@@ -141,11 +135,13 @@ Iterator erase(const Iterator &it)
     return Iterator(new_ptr);
 }
 
+// Iterator to the end of the list
 Iterator end()
 {
     return Iterator(nullptr);
 }
 
+// Task 3 a) *2
 void remove_Nth_iterator(Node *first, int N)
 {
     Iterator it(first);
@@ -160,11 +156,12 @@ void remove_Nth_iterator(Node *first, int N)
         }
         else
         {
-            it++;
+            ++it;
         }   
     }
 }
 
+// Task 3 b)
 void remove_Nth_std_list(list<int> &l, int N)
 {
     std::list<int>::iterator it = l.begin();
@@ -176,22 +173,25 @@ void remove_Nth_std_list(list<int> &l, int N)
             it = l.erase(it);
             cnt = N;
         }
-        else it++;
+        else ++it;
     }
 }
 
+// prints the elements from list
 void printList(Node *first)
 {
     Node *current = first;
+    cout << "[ ";
     while(current != nullptr)
     {
-        cout << current->data << endl;
+        cout << current->data << " ";
         current = current->next;
 
     }
+    cout << " ]" << endl;
 }
 
-
+// deletes all elemnts from list
 void deleteList(Node *first)
 {
     Node *current = first;
@@ -202,7 +202,6 @@ void deleteList(Node *first)
         delete for_delete;
     }
 }
-
 
 
 int main()
@@ -218,7 +217,7 @@ int main()
         current = current->next;
     }
     // remove_Nth_recursion(first, 5, 4);
-    // remove_Nth_iterator(first, 5);
+    remove_Nth_iterator(first, 5);
 
     reverseListWithStack(first);
     printList(first);

@@ -3,14 +3,14 @@
 
 ### **Task 2:**
     Reverse list made from 'node' structures (not encpsulated in class)
-                * by using std::stack
-                * by pushing at the beginning of the list
+                a) by pushing at the beginning of the list
+                b) by using std::stack
 ### **Task 3:**
     Remove every Nth element from:
-        * list made from 'node' structures (not encpsulated in class)
-                * by using recursion
-                * by using iterator
-        * std::list
+        a) list made from 'node' structures (not encpsulated in class)
+                *1 by using recursion
+                *2 by using iterator
+        b) std::list
 
 
 
