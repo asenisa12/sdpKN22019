@@ -35,7 +35,7 @@ void reverseList(Node *&first)
 }
 
 // Task 2 b)
-// this method is more usefull for singly linked list
+// this method is more useful for singly linked list
 void reverseListWithStack(Node *&first)
 {
     stack<Node*> s;
