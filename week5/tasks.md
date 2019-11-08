@@ -5,7 +5,7 @@
     Reverse list made from 'node' structures (not encpsulated in class)
                 * by using std::stack
                 * by pushing at the beginning of the list
-### **Task 2:**
+### **Task 3:**
     Remove every Nth element from:
         * list made from 'node' structures (not encpsulated in class)
                 * by using recursion
