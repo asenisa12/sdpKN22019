@@ -40,8 +40,7 @@ void push_pos(stack<Pos> &s, const Pos &pos)
 {
     try
     {
-        if(maze.at(pos.Y).at(pos.X) == '*' ||
-            maze.at(pos.Y).at(pos.X) == '1')
+        if(maze.at(pos.Y).at(pos.X) == '*' )
         {
             s.push(pos);
         }
@@ -49,7 +48,7 @@ void push_pos(stack<Pos> &s, const Pos &pos)
     catch(std::out_of_range)
     {}
 }
-
+//task1
 void dfs()
 {
     stack<Pos> s;
@@ -77,9 +76,35 @@ void dfs()
 }
 
 
+// F0(x) = x
+// F1(x) = 2*x
+// Fn(x) = 3*Fn-1(x) + 2*Fn-2(x)
+void findFn(int x, int n)
+{
+    int cnt = 1;
+    stack<int> s;
+    s.push(x);
+    s.push(2*x);
+
+    while(cnt < n)
+    {
+        int f1 = s.top();
+        s.pop();
+        int f2 = s.top();
+        s.pop();
+        s.push(f1);
+        s.push(3*f1 + 2*f2);
+
+        cout<<s.top()<<endl;
+
+        cnt++;
+    }
+}
+
+
 int main()
 {
-    dfs();
-    printMaze();
+    // dfs();
+    findFn(1,3);
     return 0;
 }

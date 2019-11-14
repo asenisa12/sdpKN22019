@@ -18,22 +18,26 @@
         b) append(s1, s2) - returns sequence of the squence s1 and s2 appended
 
 
-# **DFS**
-    DFS visual representation
-    https://www.codingame.com/learn/DFS
+# **Stack**
 
 ### **Task 1:**
+    DFS visual representation
+    https://www.codingame.com/learn/DFS
     Implement DFS algorithm using stack which traverses throgh labyrinth represented by 2d array
     that looks like this:
 
-        0 # * # # # * #
+        * # * # # # * #
         * # * * * # * #
         * # # # * # * #  # - wall
         * * * * * # * #  * - free space
-        # # # # * # * #  0 - start
-        * * * * * * * *  1 - end
-        * * # # # * * 1
+        # # # # * # * #  
+        * * * * * * * *  
+        * * # # # * * *
 
 
 ### **Task 2:** 
-    TBD
+    Find the value of Fn(x) using stack.
+    Where:
+        F0(x) = x
+        F1(x) = 2*x
+        Fn(x) = 3*Fn-1(x) + 2*Fn-2(x)
