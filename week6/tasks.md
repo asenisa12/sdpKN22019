@@ -20,7 +20,7 @@
 
 # **DFS**
     DFS visual representation
-    https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif
+    https://www.codingame.com/learn/DFS
 
 ### **Task 1:**
     Implement DFS algorithm using stack which traverses throgh labyrinth represented by 2d array
@@ -36,4 +36,4 @@
 
 
 ### **Task 2:** 
-    Print all paths from 0 to 1
+    TBD
