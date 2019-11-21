@@ -79,7 +79,86 @@ private:
             print_helper(current->leaf[Left], level+1);
         }
     }
+// Task 2
+    void minLeaf_helper(Leaf *leaf, T &min)
+    {
+        if(leaf != nullptr)
+        {
+            if(leaf->data < min)
+            {
+                min = leaf->data;
+            }
+            minLeaf_helper(leaf->leaf[Left],min);
+            minLeaf_helper(leaf->leaf[Right],min);
+        }
+    }
+public:
+    void minLeaf()
+    {
+        assert(root != nullptr);
+        T min = root->data;
+        minLeaf_helper(root, min);
 
+        cout<<"Min leaf: " << min << endl;
+    }
+
+// Task 3
+private:
+    void printLevel_helper(Leaf *leaf, int level)
+    {
+        if(leaf==nullptr)
+            return;
+
+        if(level == 1)
+            cout << leaf->data << " ";
+
+        printLevel_helper(leaf->leaf[Left],level - 1);
+        printLevel_helper(leaf->leaf[Right],level - 1);
+        
+    }
+public:
+    void printLevel(int level)
+    {
+        assert(root != nullptr);
+        cout << "Level "<< level << ": ";
+        printLevel_helper(root, level);
+        cout << endl;
+    }
+
+// Task 4
+    void printTreeIndexed()
+    {
+        assert(root != nullptr);
+        vector<Leaf*> level;
+        
+        level.push_back(root);
+        int level_cnt = 0;
+
+        while(!level.empty())
+        {
+            vector<Leaf*> new_level;
+
+            int col_cnt = 0;
+            for(Leaf *l : level)
+            {
+                cout << l->data;
+                cout << " (" << level_cnt << "," << col_cnt++ << "), ";
+                if(l->leaf[Left] != nullptr)
+                {
+                    new_level.push_back(l->leaf[Left]);
+                }
+                if(l->leaf[Right] != nullptr)
+                {
+                    new_level.push_back(l->leaf[Right]);
+                }
+            }
+            
+            cout << endl;
+
+            level_cnt++;
+            level = new_level;
+        }
+    }
 
 };
 
@@ -95,6 +174,19 @@ int main()
     t.addLeaf(3,{Left,Right});
     t.addLeaf(3,{Left,Left});
     t.print();
+    t.minLeaf();
+
+    t.printLevel(3);
+
+    Tree<int> t2;
+    t2.addLeaf(12);
+    t2.addLeaf(21,{Left});
+    t2.addLeaf(41,{Right});
+    t2.addLeaf(14,{Left,Left});
+    t2.addLeaf(6,{Left,Right});
+    t2.addLeaf(7,{Right,Left});
+    t2.addLeaf(9,{Right,Right});
+    t2.printTreeIndexed();
 
     return 0;
 }

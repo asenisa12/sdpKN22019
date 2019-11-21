@@ -4,17 +4,17 @@
     Implement class representing binary tree
 
 ### **Task 2:**
-    Implement function minLeaf(tree) which prints the smallest element from tree
+    Implement member function minLeaf() which prints the smallest element from tree
 
 ### **Task 3:**
-    Implement function printRow(tree, level) that takes as arguments:
+    Implement member function printLevel(level) that takes as arguments:
         * tree - reference to an instance of the class from the first task
         * level - integer indicating a level of the tree
     And prints all elements on that level
 
 
 ### **Task 4:**
-    Implement function printTreeIndexed(tree) which prints all elements from tree
+    Implement member function printTreeIndexed() which prints all elements from tree
     with their level and their position on it. For example this three:
        (12)
         / \
