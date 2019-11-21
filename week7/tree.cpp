@@ -64,22 +64,20 @@ public:
         current->leaf[trace.back()] = new Leaf(x);
     }
 
-    void prettyPrint (std::ostream& out)
+    void print()
     {
-        prettyPrintHelp (out, root, 0);
+        print_helper(root, 0);
     }
+private:
 
-    void prettyPrintHelp (std::ostream& out, Leaf *current, int level)
+    void print_helper(Leaf *current, int level)
     {
-        if (current == nullptr)
+        if (current != nullptr)
         {
-            return;
+            print_helper(current->leaf[Right],level+1);
+            cout << setw(level*2) << " " << current->data <<endl;
+            print_helper(current->leaf[Left], level+1);
         }
-
-        prettyPrintHelp (out, current->leaf[Right],level+1);
-        out << setw(level*2) << " " << current->data << std::endl;
-        prettyPrintHelp (out, current->leaf[Left], level+1);
-
     }
 
 
@@ -96,7 +94,7 @@ int main()
     t.addLeaf(3,{Right,Right});
     t.addLeaf(3,{Left,Right});
     t.addLeaf(3,{Left,Left});
-    t.prettyPrint(cout);
+    t.print();
 
     return 0;
 }
