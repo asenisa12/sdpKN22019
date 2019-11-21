@@ -7,7 +7,7 @@
     Implement member function minLeaf() which prints the smallest element from tree
 
 ### **Task 3:**
-    Implement member function printLevel(level) that takes as arguments:
+    Implement member function printLevel(level) that takes as argument:
         * level - integer indicating a level of the tree
     And prints all elements on that level
 
