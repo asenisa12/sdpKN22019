@@ -170,6 +170,61 @@ public:
     {
         return countPathsWithsum_helper(root, targetSum, 0);
     }
+
+//Task 5
+private:
+    Leaf*& getMinLeaf(Leaf *&leaf)
+    {
+        if(leaf->leaf[Left] == nullptr)
+        {
+            return leaf;
+        }
+        return getMinLeaf(leaf->leaf[Left]);
+    }
+
+    void remove_helper(const T &x, Leaf *&leaf)
+    {
+        if(leaf == nullptr)
+        {
+            cout << "Error: no leaf with value: " << x << endl;
+        }
+        else if(x < leaf->data)
+        {
+            remove_helper(x, leaf->leaf[Left]);
+        }
+        else if(x > leaf->data)
+        {
+            remove_helper(x, leaf->leaf[Right]);
+        }
+        else if (x == leaf->data )
+        {
+            if(leaf->leaf[Right] == nullptr)
+            {
+                Leaf *tmp = leaf;
+                leaf = leaf->leaf[Left];
+                delete tmp;
+            }
+            else
+            {
+                Leaf *&min_leaf = getMinLeaf(leaf->leaf[Right]);
+                Leaf *min_save = min_leaf;
+                min_leaf = min_leaf->leaf[Right];
+
+                min_save->leaf[Left] = leaf->leaf[Left];
+                min_save->leaf[Right] = leaf->leaf[Right];
+
+                Leaf *tmp = leaf;
+                leaf = min_save;
+                delete tmp;
+            }
+        }
+    }
+public:
+    void remove(const T &x)
+    {
+        remove_helper(x, root);
+    }
+
 };
 
 
@@ -227,5 +282,8 @@ int main()
     t5.print();
     std::cout<< t5.countPathsWithsum(4) << std::endl;
 
+
+    t2.remove(8);
+    t2.print();
     return 0;
 }
