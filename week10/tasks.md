@@ -17,7 +17,7 @@ Using it the following problems:
 ### **Task 1:**
     Write functions:
       insert(int value, Node *root) that inserts new Node in three starting from the given root
-      delete(int value, Node *root) delete three starting from the given root
+      delete_tree(int value, Node *&root) delete three starting from the given root
 
 ### **Task 2:**
     Write function "Node* lowest_common_ancestor(Node* n1, Node *n2, Node* root); "
@@ -30,7 +30,7 @@ Using it the following problems:
         n1 n2    the lowest common ancestor of n1 and n2 is n3 and the one for n2 and n6 is n4
 
 ### **Task 3:**
-    Write function that prints the value of K’th smallest and K’th largest element in BST
+    Write function that prints the value of K’th smallest element in BST
 
 
 ### **For self-preparation**
