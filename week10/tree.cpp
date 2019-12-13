@@ -10,7 +10,7 @@ struct Node
     int data;
   
     Node(int _data)
-        :data(_data)
+        :data(_data), left(nullptr), right(nullptr)
     {}
 };
 
