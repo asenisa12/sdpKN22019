@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <functional>
+#include <fstream>
 using namespace std;
 
 template<typename T>
-class HashMap
+class HashTable
 {
 
     struct HashEntry{
@@ -19,11 +20,11 @@ class HashMap
 
 
 public: 
-    HashMap(int size, int (*_hash)(const char*, int))
+    HashTable(int size, int (*_hash)(const char*, int))
         :table(size, nullptr), hash(_hash)
     {}
 
-    ~HashMap()
+    ~HashTable()
     {
         for (auto &entry : table)
         {
@@ -31,9 +32,9 @@ public:
         }
     }
 
-    T& operator[](const char* key)
+    T& operator[](const string& key)
     {
-        int id = hash(key, table.size());
+        int id = hash(key.c_str(), table.size());
         
         if(id > table.size())
         {
@@ -48,13 +49,29 @@ public:
         return table[id]->data;
     }
 
+    bool hasKey(const string& key)
+    {
+        int id = hash(key.c_str(), table.size());
+        
+        if(id > table.size())
+        {
+            return false;
+        }
+
+        return table[id] != nullptr;
+    }
+
     vector<string> keys()
     {
         vector<string> keys_vec;
         for (auto &entry : table)
         {
-            keys_vec.push_back(entry->key);
+            if(entry != nullptr)
+            {
+                keys_vec.push_back(entry->key);
+            }
         }
+        return keys_vec;
     }
 
     typedef typename vector<HashEntry*>::iterator table_it;
@@ -94,13 +111,12 @@ public:
     Iterator begin()
     {
         table_it it = table.begin();
-        while(it != table.end())
+        for(; it != table.end(); ++it)
         {
             if(*it != nullptr)
             {
                 break;
             }
-            ++it;
         }
         return Iterator(it, &table);
     }
@@ -126,24 +142,62 @@ int hash_func1(const char* key, int size)
 }
 
 
+void count_word(const string &filename)
+{
+
+    ifstream file(filename);
+    string line; 
+    HashTable<int> w_counter(100, hash_func1);
+    while (getline(file, line))
+    {
+        int word_start = 0;
+        int word_end = 0;
+        do
+        {
+            word_end = line.find(' ', word_start);
+            word_end = (word_end == string::npos)? line.size() : word_end;
+            
+            string word = line.substr(word_start, word_end - word_start);
+            if(w_counter.hasKey(word))
+            {
+                w_counter[word]++;
+            }
+            else
+            {
+                w_counter[word] = 1;
+            }
+            
+            word_start = word_end + 1;
+        } while (word_end != line.size());
+    }
+
+    for (auto &key : w_counter.keys())
+    {
+        cout << key << " " << w_counter[key] << endl;
+    }
+
+}
+
 
 int main()
 {
 
-    HashMap<string> hm(40, hash_func1);
+    HashTable<string> ht(40, hash_func1);
 
-    hm["John"] = "Smith";
+    ht["John"] = "Smith";
+    ht["Ivan"] = "Ivanov";
+    ht["Pehso"] = "Peshov";
 
-    hm["Backo"] = "Backov";
-    HashMap<string>::Iterator it = hm.begin();
 
-    hm["Bojko"] = "Borisov";
-
-    while(it!= hm.end())
+    HashTable<string>::Iterator it = ht.begin();
+    while(it!= ht.end())
     {
         cout<<*it<<endl;
         ++it;
     }
+    cout<<endl;
+
+    count_word("text.txt");
 
 
     return 0;
