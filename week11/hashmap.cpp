@@ -6,19 +6,34 @@ using namespace std;
 template<typename T>
 class HashMap
 {
-    vector<T*> table;
 
-    function<int(const char*)> hash;
+    struct HashEntry{
+        string key;
+        T data;
+        HashEntry(string _key) : key(_key)
+        {}
+    };
+    vector<HashEntry*> table;
+
+    int (*hash)(const char*, int size);
 
 
 public: 
-    HashMap(int size, const function<int(const char*)> &_hash)
+    HashMap(int size, int (*_hash)(const char*, int))
         :table(size, nullptr), hash(_hash)
     {}
 
+    ~HashMap()
+    {
+        for (auto &entry : table)
+        {
+            delete entry;
+        }
+    }
+
     T& operator[](const char* key)
     {
-        int id = hash(key);
+        int id = hash(key, table.size());
         
         if(id > table.size())
         {
@@ -27,20 +42,29 @@ public:
 
         if(table[id] == nullptr)
         {
-            table[id] = new T();
+            table[id] = new HashEntry(key);
         }
 
-        return *table[id];
+        return table[id]->data;
     }
 
-    typedef typename vector<T*>::iterator table_it;
+    vector<string> keys()
+    {
+        vector<string> keys_vec;
+        for (auto &entry : table)
+        {
+            keys_vec.push_back(entry->key);
+        }
+    }
+
+    typedef typename vector<HashEntry*>::iterator table_it;
     class Iterator
     {
         table_it current;
-        vector<T*> *table_ref;
+        vector<HashEntry*> *table_ref;
     public:
 
-        Iterator(const table_it& _curr,  vector<T*>  *_table_ref)
+        Iterator(const table_it& _curr,  vector<HashEntry*>  *_table_ref)
             :current(_curr), table_ref(_table_ref)
         {}
         //prefix
@@ -63,7 +87,7 @@ public:
 
         const T& operator*() 
         {
-            return *(*current); 
+            return (*current)->data; 
         }
     };
 
@@ -88,15 +112,13 @@ public:
 
 };
 
-int hash_func1(const char* key)
+int hash_func1(const char* key, int size)
 {
     unsigned int hash = 0;
-    int size = 1;
 	int c;
 
 	while (c = *key++)
     {
-        size++;
 	    hash += c;
     }
 
@@ -112,7 +134,7 @@ int main()
 
     hm["John"] = "Smith";
 
-    hm["Boj2o"] = "Borisov";
+    hm["Backo"] = "Backov";
     HashMap<string>::Iterator it = hm.begin();
 
     hm["Bojko"] = "Borisov";
