@@ -20,5 +20,5 @@
             ACJ
             AB
             ....... and so on
-        * bool wordIsContained(const std::string &word) returns if word is contained in the trie.
+        * bool wordIsContained(const std::string &word) returns true if word is contained within the trie.
 
