@@ -1,7 +1,7 @@
 # **Graphs**
 
 ### **Task 1:**
-    Implement class named DWGraph representing directed graph
+    Implement class named DWGraph representing directed weighted graph
 
 ### **Task 2:**
     Implement member function areConnected(int vertex1, int vertex2)
